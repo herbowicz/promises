@@ -24,6 +24,21 @@
 
 const p = require('../utils.js');
 
+function attempt(myPromise){
+    let result;
+    for(var i = 0; i < myPromise.length; i++) {
+        result = myPromise[i]().catch(function(result) {
+          myPromise[i]().catch(function(result) {
+            myPromise[i]().catch(function(result) {  //TODO
+              resolve(result)
+            })
+          })
+        })
+    }
+    return result;
+}
+
+
 describe('problem2', () => {
     it('properly resolves with just one promise', async () => {
         const result = await attempt([
